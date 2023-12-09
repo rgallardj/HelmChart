@@ -1,0 +1,64 @@
+# templates/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "actividad1.fullname" . }}
+  labels:
+    app: {{ include "actividad1.name" . }}
+    chart: {{ include "actividad1.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1 # Ajusta según sea necesario
+  selector:
+    matchLabels:
+      app: {{ include "actividad1.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "actividad1.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      initContainers:
+        - name: eurekaserver
+          image: actividad1-eurekaserver:latest
+          ports:
+          - containerPort: 8761
+          # Configura otros parámetros del contenedor según sea necesario
+          command: ["sh", "-c", "until nslookup eurekaserver.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo esperando a eurekaserver; sleep 30; done"]
+
+        - name: configserver
+          image: actividad1-configserver:latest
+          ports:
+          - containerPort: 8001
+          # Configura otros parámetros del contenedor según sea necesario
+          command: ["sh", "-c", "until nslookup configserver.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo esperando a configserver; sleep 40; done"]
+
+      containers:
+        - name: gestioncliente
+          image: actividad1-gestioncliente:latest
+          ports:
+            - containerPort: 8092
+          # Ajusta otros parámetros del contenedor según sea necesario
+
+        - name: gestionhorario
+          image: actividad1-gestionhorario:latest
+          ports:
+            - containerPort: 8093
+          # Ajusta otros parámetros del contenedor según sea necesario
+      
+
+        - name: gestionpedido
+          image: actividad1-gestionpedido:latest
+          ports:
+            - containerPort: 8091
+          # Ajusta otros parámetros del contenedor según sea necesario
+
+        - name: user
+          image: actividad1-user:latest
+          ports:
+            - containerPort: 8020
+          # Ajusta otros parámetros del contenedor según sea necesario
+  # Ajusta otros parámetros del Deployment según sea necesario

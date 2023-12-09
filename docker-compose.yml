@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  configserver:
+    build:
+      dockerfile: Dockerfile
+      context: ./config_server
+    container_name: configserver
+    ports:
+      - "8001:8001"
+   
+
+  eurekaserver:
+    build:
+      dockerfile: Dockerfile
+      context: ./eureka-server
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+
+  gestioncliente:
+    build:
+      dockerfile: Dockerfile
+      context: ./gestion_cliente
+    container_name: gestioncliente
+    ports:
+      - "8092:8092"
+    depends_on:
+      - eurekaserver
+      - configserver 
+
+  gestionhorario:
+    build:
+      dockerfile: Dockerfile
+      context: ./gestion_horario
+    container_name: gestionhorario
+    ports:
+      - "8093:8093"
+    depends_on:
+      - eurekaserver
+      - configserver
+
+  gestionpedido:
+    build:
+      dockerfile: Dockerfile
+      context: ./gestion_pedido
+    container_name: gestionpedido
+    ports:
+      - "8091:8091"
+    depends_on:
+      - eurekaserver
+      - configserver  
+  user:
+    build:
+      dockerfile: Dockerfile
+      context: ./user
+    container_name: user
+    ports:
+      - "8020:8020"
+    depends_on:
+      - eurekaserver
+      - configserver
+      
+  

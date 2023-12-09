@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  actividad1:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-12-09T19:02:30.5440009+01:00"
+    description: A Helm chart for Kubernetes for actividad1
+    digest: 8d4ffb7de1afd7fad899493cba3456b7f21e6950d4efc7cd439a983b92480856
+    name: actividad1
+    type: application
+    urls:
+    - actividad1-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-12-09T19:02:30.5409526+01:00"

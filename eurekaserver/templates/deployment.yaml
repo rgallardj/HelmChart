@@ -1,0 +1,32 @@
+# templates/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eurekaserver.fullname" . }}
+  labels:
+    app: {{ include "eurekaserver.name" . }}
+    chart: {{ include "eurekaserver.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1 # Ajusta según sea necesario
+  selector:
+    matchLabels:
+      app: {{ include "eurekaserver.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "eurekaserver.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: eurekaserver
+          image: actividad1-eurekaserver:latest
+          ports:
+            - containerPort: 8761
+          # Configura otros parámetros del contenedor según sea necesario
+         
+
+    
