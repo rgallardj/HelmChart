@@ -1,3 +1,0 @@
-@echo off
-echo Esperando 60 segundos...
-timeout /t 60 /nobreak
